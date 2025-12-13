@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: orderproducer
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      batch-size: 32768
+      linger-ms: 10
+      compression-type: snappy
+server:
+  port: 8005
+logging:
+  level:
+    root: info
+

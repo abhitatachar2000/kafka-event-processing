@@ -8,11 +8,13 @@
 
     <modules>
         <module>common/event-models</module>
+        <module>services/order-producer</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
         <spring.boot.version>3.2.0</spring.boot.version>
+        <slf4j.version>2.0.9</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -24,8 +26,36 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
