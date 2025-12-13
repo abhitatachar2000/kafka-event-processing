@@ -4,20 +4,28 @@ services:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
     ports:
-      - "9092:9092" # we only expose 9092 and not 9093 because the KRaft controller runs internally. We only want the producers and consumers running on my local system to connect to kafka
+      - "29092:29092"
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller # I don't want to use zookeper at this point for handling metadata. Since kafka version > 3.5 I am using KRaft
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093 # where kafka listens internally - producers and consumers on port 9092, controller listens on 9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 # advertises for clients to use this address
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT # PLAINTEXT -> basically means no auth, no encryption
+      KAFKA_LISTENERS: >
+        INTERNAL://0.0.0.0:9092,
+        EXTERNAL://0.0.0.0:29092,
+        CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: >
+        INTERNAL://kafka:9092,
+        EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: >
+        INTERNAL:PLAINTEXT,
+        EXTERNAL:PLAINTEXT,
+        CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Since there is only one broker replication is not possible.
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      CLUSTER_ID: kafka-order-inventory-cluster
+      CLUSTER_ID: l1aKPz9jbJobSpriAIgNAw # generated using  openssl rand -base64 16 | tr -d '=' | tr '+/' '-_'  kafka expects a url safe id
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest

@@ -1,0 +1,10 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.kafkaevents</groupId>
+        <artifactId>kafka-event-processing</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>event-models</artifactId>
+</project>
