@@ -14,12 +14,13 @@ public class OrderEventGenerator {
             2, 25.50,
             3, 7.25,
             4, 3.56,
-            5, 12.13
+            5, 12.13,
+            6, 2.33
     );
     public static OrderEvent generate(int orderID) {
         Random random = new Random();
-        int productID = random.nextInt(5) + 1;
-        int quantity = random.nextInt(10) + 1;
+        int productID = random.nextInt(6) + 1;
+        int quantity = random.nextInt(11);
         return new OrderEvent(
                 orderID,
                 productID,

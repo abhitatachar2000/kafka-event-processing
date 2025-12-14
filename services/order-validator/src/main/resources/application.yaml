@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: order-validator
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: order-validator-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false # We want to provide manual acknowledgement after processing
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.kafkaevents.events
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      batch-size: 32768
+      linger-ms: 10
+      compression-type: snappy
+      properties:
+        spring.json.trusted.packages: com.kafkaevents.events
+
+logging:
+  level:
+    root: info

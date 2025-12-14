@@ -8,6 +8,9 @@ public class OrderEvent {
     private double price;
     private Instant timestamp;
 
+    public OrderEvent() {
+    }
+
     public OrderEvent(int orderId, int productId, int quantity, double price, Instant timestamp) {
         this.orderId = orderId;
         this.productId = productId;
