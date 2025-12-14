@@ -21,7 +21,7 @@ docker exec kafka kafka-topics \
   --replication-factor 1
 ```
 
-### 2. orders.dlq
+### 3. orders.dlq
 ```bash
 docker exec kafka kafka-topics \
   --bootstrap-server localhost:9092 \
@@ -30,3 +30,28 @@ docker exec kafka kafka-topics \
   --partitions 6 \
   --replication-factor 1
 ```
+### 3. inventory.restock
+```
+╰─ docker exec kafka kafka-topics \
+--bootstrap-server localhost:9092 \
+--create \
+--topic inventory.restock \
+--partitions 6 \
+--replication-factor 1
+```
+
+### 4. orders.rejected
+docker exec kafka kafka-topics \
+--bootstrap-server localhost:9092 \
+--create \
+--topic orders.rejected \
+--partitions 6 \
+--replication-factor 1
+
+### 5. orders.rejected
+docker exec kafka kafka-topics \
+--bootstrap-server localhost:9092 \
+--create \
+--topic inventory.updates \
+--partitions 6 \
+--replication-factor 1

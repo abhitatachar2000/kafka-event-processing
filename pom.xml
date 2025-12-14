@@ -12,6 +12,7 @@
         <module>common/event-models</module>
         <module>services/order-producer</module>
         <module>services/order-validator</module>
+        <module>services/inventory</module>
     </modules>
     <properties>
         <java.version>25</java.version>

@@ -1,10 +1,10 @@
 spring:
   application:
-    name: order-validator
+    name: inventory
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      group-id: order-validator-group
+      group-id: inventory-updater-group
       auto-offset-reset: earliest
       enable-auto-commit: false # We want to provide manual acknowledgement after processing
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -22,7 +22,7 @@ spring:
       properties:
         spring.json.trusted.packages: com.kafkaevents.events
 server:
-  port: 8006
+  port: 8007
 logging:
   level:
     root: info

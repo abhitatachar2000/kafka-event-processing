@@ -22,7 +22,7 @@ public class OrderValidationConsumer {
     @KafkaListener(
             topics = "orders.raw",
             containerFactory = "kafkaListenerContainerFactory",
-            concurrency = "3"
+            concurrency = "6"
     )
     public void consume(
             ConsumerRecord<String, OrderEvent> record,
