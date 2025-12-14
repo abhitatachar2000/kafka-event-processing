@@ -14,7 +14,7 @@
         <module>services/order-validator</module>
     </modules>
     <properties>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
         <spring.boot.version>3.5.8</spring.boot.version>
         <slf4j.version>2.0.9</slf4j.version>
         <lombok.version>1.18.42</lombok.version>
@@ -70,8 +70,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
