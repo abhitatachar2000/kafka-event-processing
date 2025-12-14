@@ -4,7 +4,16 @@
         <groupId>com.kafkaevents</groupId>
         <artifactId>kafka-event-processing</artifactId>
         <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <artifactId>event-models</artifactId>
 </project>
