@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: metrics
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: metrics-api-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.kafkaevents.events
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+server:
+  port: 8009
+logging:
+  level:
+    root: info

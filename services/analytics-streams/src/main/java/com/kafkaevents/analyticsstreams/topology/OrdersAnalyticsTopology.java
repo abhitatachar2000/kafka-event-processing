@@ -31,24 +31,24 @@ public class OrdersAnalyticsTopology {
     private final Serde<MetricEvent> metricEventSerde;
 
     @Bean
-    public KStream<String, OrderEvent> ordersPerMinute(StreamsBuilder builder) {
+    public KStream<String, OrderEvent> ordersPerProductPerDay(StreamsBuilder builder) {
         KStream<String, OrderEvent> ordersStream = builder.stream(
                 "orders.validated",
                 Consumed.with(Serdes.String(), this.orderEventSerde)
         );
 
         ordersStream.groupByKey()
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
-                .count(Materialized.as("orders-per-minute-store"))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofDays(1)))
+                .count(Materialized.with(Serdes.String(), Serdes.Long()))
                 .toStream()
                 .map((windowedKey, count) ->
                     new KeyValue<>(
-                            windowedKey.key(),
+                            windowedKey.key() + "_" + String.valueOf(Instant.ofEpochMilli(windowedKey.window().start())),
                             new MetricEvent(
-                                    "ORDERS_PER_MIN",
-                                    windowedKey.key(),
+                                    "ORDERS_PER_PRODUCT_DAILY",
+                                    windowedKey.key() + "_" + String.valueOf(Instant.ofEpochMilli(windowedKey.window().start())),
                                     count,
-                                    Instant.now()
+                                    Instant.ofEpochMilli(windowedKey.window().start())
                             )
                     )
                 ).to("metrics.output", Produced.with(Serdes.String(), metricEventSerde));
@@ -63,16 +63,17 @@ public class OrdersAnalyticsTopology {
         );
 
         acceptedOrderStream.groupByKey()
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofDays(1)))
                 .aggregate(() -> 0D, (key, value, aggregate) -> aggregate + value.getPrice(), Materialized.with(Serdes.String(), Serdes.Double()))
                 .toStream()
-                .map((key, total) ->
+                .map((windowedKey, total) ->
                         new KeyValue<>(
-                                key,
+                                windowedKey.key() + "_" + String.valueOf(Instant.ofEpochMilli(windowedKey.window().start())),  // Include window start for uniqueness
                                 new MetricEvent(
-                                        "REVENUE_PER_PRODUCT",
-                                        key,
+                                        "REVENUE_PER_PRODUCT_DAILY",
+                                        windowedKey.key() + "_" + String.valueOf(Instant.ofEpochMilli(windowedKey.window().start())),
                                         total,
-                                        Instant.now()
+                                        Instant.ofEpochMilli(windowedKey.window().start())  // Use window start time
                                 )
                         )
                 ).to("metrics.output", Produced.with(Serdes.String(), metricEventSerde));
