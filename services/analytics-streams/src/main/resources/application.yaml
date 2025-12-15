@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: analyticsstreams
+  kafka:
+    bootstrap-servers: localhost:29092
+    streams:
+      application-id: analytics-streams-app
+      properties:
+        processing.guarantee: exactly_once_v2
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+logging:
+  level:
+    root: info
+server:
+  port: 8008

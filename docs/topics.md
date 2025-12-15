@@ -30,8 +30,8 @@ docker exec kafka kafka-topics \
   --partitions 6 \
   --replication-factor 1
 ```
-### 3. inventory.restock
-```
+### 4. inventory.restock
+```bash
 docker exec kafka kafka-topics \
 --bootstrap-server localhost:9092 \
 --create \
@@ -40,8 +40,8 @@ docker exec kafka kafka-topics \
 --replication-factor 1
 ```
 
-### 4. orders.rejected
-```
+### 5. orders.rejected
+```bash
 docker exec kafka kafka-topics \
 --bootstrap-server localhost:9092 \
 --create \
@@ -50,8 +50,18 @@ docker exec kafka kafka-topics \
 --replication-factor 1
 ```
 
-### 5. orders.rejected
+### 6. orders.accepted
+```bash
+docker exec kafka kafka-topics \
+--bootstrap-server localhost:9092 \
+--create \
+--topic orders.accepted \
+--partitions 6 \
+--replication-factor 1
 ```
+
+### 7. orders.rejected
+```bash
 docker exec kafka kafka-topics \
 --bootstrap-server localhost:9092 \
 --create \

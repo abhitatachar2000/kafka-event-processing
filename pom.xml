@@ -13,6 +13,7 @@
         <module>services/order-producer</module>
         <module>services/order-validator</module>
         <module>services/inventory</module>
+        <module>services/analytics-streams</module>
     </modules>
     <properties>
         <java.version>25</java.version>

@@ -75,8 +75,13 @@ public class InventoryConsumer {
                         lowStockNotificationEvent
                 );
             }
+            kafkaTemplate.send(
+                    "orders.accepted",
+                    String.valueOf(productId),
+                    order
+            );
         } else {
-            logger.info(String.format("Product %s is out of stock. Rejecting order with id %s", productId, order.getOrderId()));
+            logger.info(String.format("Product %s stock not sufficient to complete order. Rejecting order with id %s", productId, order.getOrderId()));
             kafkaTemplate.send(
                     "orders.rejected",
                     String.valueOf(productId),
