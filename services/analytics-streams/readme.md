@@ -14,7 +14,7 @@ The following is the streams configuration:
 ```yaml
 spring:
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     streams:
       application-id: analytics-streams-app
       properties:

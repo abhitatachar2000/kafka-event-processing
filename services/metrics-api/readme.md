@@ -24,7 +24,7 @@ The consumer is created with this configuration:
 ```yaml
 spring:
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: metrics-api-group
       auto-offset-reset: earliest

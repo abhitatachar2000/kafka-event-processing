@@ -2,7 +2,7 @@ spring:
   application:
     name: order-validator
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: order-validator-group
       auto-offset-reset: earliest

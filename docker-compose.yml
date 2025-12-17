@@ -4,23 +4,15 @@ services:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
     ports:
-      - "29092:29092"
+      - "9092:9092"
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller # I don't want to use zookeper at this point for handling metadata. Since kafka version > 3.5 I am using KRaft
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_LISTENERS: >
-        INTERNAL://0.0.0.0:9092,
-        EXTERNAL://0.0.0.0:29092,
-        CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: >
-        INTERNAL://kafka:9092,
-        EXTERNAL://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: >
-        INTERNAL:PLAINTEXT,
-        EXTERNAL:PLAINTEXT,
-        CONTROLLER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Since there is only one broker replication is not possible.
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -37,10 +29,42 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092 #kafka listener is at this port
-  
-  
 
+  order-producer:
+    build: ./services/order-producer
+    ports:
+      - "8005:8005"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
+  order-validator:
+    build: ./services/order-validator
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
+  inventory:
+    build: ./services/inventory
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
+  analytics-streams:
+    build: ./services/analytics-streams
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
+  metrics-api:
+    build: ./services/metrics-api
+    ports:
+      - "8009:8009"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092  

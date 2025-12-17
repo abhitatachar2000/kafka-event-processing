@@ -60,12 +60,22 @@ docker exec kafka kafka-topics \
 --replication-factor 1
 ```
 
-### 7. orders.rejected
+### 7. inventory.updates
 ```bash
 docker exec kafka kafka-topics \
 --bootstrap-server localhost:9092 \
 --create \
 --topic inventory.updates \
+--partitions 6 \
+--replication-factor 1
+```
+
+### 8. metrics.output
+```bash
+docker exec kafka kafka-topics \
+--bootstrap-server localhost:9092 \
+--create \
+--topic metrics.output \
 --partitions 6 \
 --replication-factor 1
 ```
