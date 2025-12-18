@@ -53,7 +53,6 @@ The service runs on port 8009.
 
 To query metrics, make a GET request to the `/api/v1/metrics` endpoint with a query parameter `metricName`. Supported metric names are:
 
-- `ordersPerMinute`: Returns orders per minute aggregated by product ID
 - `ordersPerProductPerDay`: Returns orders per product per day
 - `revenuePerProductPerDay`: Returns revenue per product per day
 - `outOfStockProducts`: Returns products that are out of stock with timestamps
@@ -61,5 +60,5 @@ To query metrics, make a GET request to the `/api/v1/metrics` endpoint with a qu
 Example request:
 
 ```bash
-curl -X GET "http://localhost:8009/api/v1/metrics?metricName=ordersPerMinute"
+curl -X GET "http://localhost:8009/api/v1/metrics?metricName=ordersPerProductPerDay"
 ```

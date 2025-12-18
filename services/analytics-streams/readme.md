@@ -4,8 +4,8 @@ The analytics service makes uses of Kafka streams (KStreams and KTables) to stre
 
 For analytics three metrics are being generated:
 
-1. Orders per minute `ORDERS_PER_MIN` - Reads the events from `orders.validated` topic, groups by key (productId), windows by 1 min duration and counts the number of events.
-2. Revenue per product `REVENUE_PER_PRODUCT` - Reads the event from `inventory.updated` topic, groups by key (productId), and creates an aggregation to add the prices of the product.
+1. Orders per product per day `ORDERS_PER_PRODUCT_DAILY` - Reads the events from `orders.validated` topic, groups by key (productId), windows by 1 day duration and counts the number of events.
+2. Revenue per product per day `REVENUE_PER_PRODUCT_DAILY` - Reads the event from `orders.accepted` topic, groups by key (productId), and creates an aggregation to add the prices of the order.
 3. Out of stock product table `STOCK_EMPTY` - Creates a KTable by streaming events from `inventory.updates` and filters those products whose stock is 0.
 
 These metrics are streamed to an output topic `metrics.output`.

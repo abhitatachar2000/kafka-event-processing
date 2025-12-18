@@ -25,8 +25,6 @@ public class MetricsController {
     public ResponseEntity<?> produceMetrics(@RequestParam String metricName) throws RuntimeException {
         try {
             switch (metricName) {
-                case "ordersPerMinute":
-                    return ResponseEntity.status(HttpStatus.OK).body(metricsService.getOrdersPerMinute());
                 case "ordersPerProductPerDay":
                     return ResponseEntity.status(HttpStatus.OK).body(metricsService.getOrdersPerProductDaily());
                 case "revenuePerProductPerDay":
