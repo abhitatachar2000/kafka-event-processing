@@ -1,0 +1,68 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam ArrowThickness 1
+
+' ================= SERVICES =================
+component "Order Producer" as OP #lightblue
+component "Order Validator" as OV #lightgreen
+component "Inventory Service" as INV #lightyellow
+component "Analytics Streams" as AS #lightcoral
+component "Metrics API" as MA #lightgray
+
+' ================= KAFKA ====================
+frame "Kafka Topics" {
+
+  rectangle "orders.raw" as OR
+  rectangle "orders.dlq" as ODLQ
+  rectangle "orders.validated" as OVAL
+  rectangle "orders.accepted" as OACC
+  rectangle "orders.rejected" as OREJ
+  rectangle "inventory.updates" as IUPD
+  rectangle "inventory.restock" as IREST
+  rectangle "metrics.output" as MOUT
+}
+
+' ================= FLOWS ====================
+OP --> OR
+
+OV <-- OR
+OV --> OVAL
+OV --> ODLQ
+
+INV <-- OVAL
+INV --> OACC
+INV --> OREJ
+INV --> IUPD
+INV --> IREST
+
+AS <-- OR
+AS <-- OACC
+AS <-- IUPD
+AS --> MOUT
+
+MA <-- MOUT
+
+' ================= LAYOUT LOCK =================
+OP -[hidden]-> OV
+OV -[hidden]-> INV
+INV -[hidden]-> AS
+AS -[hidden]-> MA
+
+OR -[hidden]-> ODLQ
+ODLQ -[hidden]-> OVAL
+OVAL -[hidden]-> OACC
+OACC -[hidden]-> OREJ
+OREJ -[hidden]-> IUPD
+IUPD -[hidden]-> IREST
+IREST -[hidden]-> MOUT
+
+' ================= LEGEND =====================
+legend right
+→ Service → Topic : Produces  
+← Topic → Service : Consumes  
+endlegend
+
+@enduml

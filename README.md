@@ -65,60 +65,7 @@ This project is a monorepo containing a microservices-based event processing sys
 
 ### Component Diagram
 
-```plantuml
-@startuml Component Diagram
-!define RECTANGLE class
-
-RECTANGLE "Order Producer" as OP #lightblue
-RECTANGLE "Order Validator" as OV #lightgreen
-RECTANGLE "Inventory Service" as INV #lightyellow
-RECTANGLE "Analytics Streams" as AS #lightcoral
-RECTANGLE "Metrics API" as MA #lightgray
-
-database "Kafka Topics" as KT {
-  rectangle "orders.raw" as OR
-  rectangle "orders.validated" as OVAL
-  rectangle "orders.dlq" as ODLQ
-  rectangle "orders.accepted" as OACC
-  rectangle "orders.rejected" as OREJ
-  rectangle "inventory.updates" as IUPD
-  rectangle "inventory.restock" as IREST
-  rectangle "metrics.output" as MOUT
-}
-
-OP --> OR : produces
-OV --> OR : consumes
-OV --> OVAL : produces (valid)
-OV --> ODLQ : produces (invalid)
-
-INV --> OVAL : consumes
-INV --> OACC : produces
-INV --> OREJ : produces
-INV --> IREST : produces
-INV --> IUPD : produces
-
-AS --> OVAL : consumes (ORDERS_PER_PRODUCT_PER_DAY)
-AS --> IUPD : consumes (REVENUE_PER_PRODUCT_PER_DAY, STOCK_EMPTY)
-AS --> MOUT : produces
-
-MA --> MOUT : consumes
-
-note right of OP
-  Generates mock orders
-  REST API: /api/v1/orders/generate
-end note
-
-note right of AS
-  Kafka Streams processing
-  Real-time aggregations
-end note
-
-note right of MA
-  REST API: /api/v1/metrics
-  In-memory metrics store
-end note
-@enduml
-```
+![Service Interactions Diagram](docs/interactions.png)
 
 ### Service Interactions
 
