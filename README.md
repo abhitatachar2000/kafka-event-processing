@@ -35,7 +35,7 @@ This project is a monorepo containing a microservices-based event processing sys
    - Publishes orders to the `orders.raw` topic
    - Provides REST API for controlling order generation rate and duration
 
-2. **Order Validator**
+2. **Order Validator** (Port: 8006)
    - Consumes raw orders from `orders.raw` topic
    - Validates orders based on business rules (quantity > 0 and price > 0)
    - Publishes valid orders to `orders.validated` topic
@@ -50,7 +50,7 @@ This project is a monorepo containing a microservices-based event processing sys
    - Publishes restock notifications to `inventory.restock` topic when stock < 5
    - Publishes inventory updates to `inventory.updates` topic
 
-4. **Analytics Streams**
+4. **Analytics Streams** (Port: 8008)
    - Uses Kafka Streams for real-time analytics processing
    - Generates three key metrics:
      - **Orders Per Product Per Day**: Counts orders per product from `orders.validated` topic
