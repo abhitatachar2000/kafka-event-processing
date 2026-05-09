@@ -1,4 +1,4 @@
-# Kafka Event Processing System
+# Event-Driven E-Commerce Management System
 
 ## Problem and Use Case
 
