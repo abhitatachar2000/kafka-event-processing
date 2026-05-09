@@ -1,4 +1,4 @@
-# Event-Driven E-Commerce Management System
+# Event-Driven E-Commerce Order Processing System
 
 ## Problem and Use Case
 
